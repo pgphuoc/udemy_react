@@ -89,17 +89,17 @@ const Login = () => {
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
 
-  useEffect(() => {
-    console.log('EFFECT RUNNING');
+  // useEffect(() => {
+  //   console.log('EFFECT RUNNING');
 
-    return () => {
-      console.log('EFFECT CLEANUP');
-    };
-  }, []);
+  //   return () => {
+  //     console.log('EFFECT CLEANUP');
+  //   };
+  // }, []);
 
   useEffect(() => {
     const identifier = setTimeout(() => {
-      console.log('Checking form validity!');
+      // console.log('Checking form validity!');
       setFormIsValid(emailIsValid && passwordIsValid);
     }, 500);
 
