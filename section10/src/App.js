@@ -4,7 +4,7 @@ import Login from "./components/Login/Login";
 import Home from "./components/Home/Home";
 import MainHeader from "./components/MainHeader/MainHeader";
 
-import AuthContext from "./store/auth-context";
+import AuthContext, { AuthContextProvider } from "./store/auth-context";
 
 function App() {
   // == Move to auth-context.js
@@ -33,13 +33,13 @@ function App() {
   const ctx = useContext(AuthContext);
 
   return (
-    <React.Fragment>
+    <AuthContextProvider>
       <MainHeader />
       <main>
         {!ctx.isLoggedIn && <Login />}
         {ctx.isLoggedIn && <Home />}
       </main>
-    </React.Fragment>
+    </AuthContextProvider>
   );
 }
 
