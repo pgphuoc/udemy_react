@@ -1,47 +1,72 @@
-const path = require("path")
-const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const HtmlWebpackPlugin = require("html-webpack-plugin")
+const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const VENDOR_LIBS = ["react", "react-dom"]
+const VENDOR_LIBS = ['react', 'react-dom'];
 
 const config = {
   entry: {
-    bundle: "./src/index.js"
+    bundle: './src/index.js',
+    vendor: VENDOR_LIBS,
   },
   output: {
-    path: path.join(__dirname, "dist"),
-    filename: "bundle.js"
+    path: path.join(__dirname, 'dist'),
+    filename: '[name].js',
   },
   module: {
     rules: [
       {
-        use: "babel-loader",
+        use: 'babel-loader',
         test: /\.js$/,
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
       {
         // use: ["style-loader", "css-loader"],
-        use: [MiniCssExtractPlugin.loader, "css-loader"],
-        test: /\.css$/
-      }
-    ]
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        test: /\.css$/,
+      },
+    ],
+  },
+
+  optimization: {
+    splitChunks: {
+      chunks: 'async',
+      minSize: 20000,
+      minRemainingSize: 0,
+      minChunks: 1,
+      maxAsyncRequests: 30,
+      maxInitialRequests: 30,
+      enforceSizeThreshold: 50000,
+      cacheGroups: {
+        defaultVendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10,
+          reuseExistingChunk: true,
+        },
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true,
+        },
+      },
+    },
   },
 
   resolve: {
-    extensions: [".ts", ".tsx", ".js", ".jsx"],
+    extensions: ['.js'],
     alias: {
-      "@": path.resolve("src"),
-      "@@": path.resolve()
-    }
+      '@': path.resolve('src'),
+      '@@': path.resolve(),
+    },
   },
 
   plugins: [
     new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin({
-      template: "public/index.html"
-    })
-  ]
-}
+      template: 'public/index.html',
+    }),
+  ],
+};
 
 // const config = {
 //   entry: "./src/index.js",
@@ -70,4 +95,4 @@ const config = {
 //   plugins: [new MiniCssExtractPlugin()],
 // };
 
-module.exports = config
+module.exports = config;

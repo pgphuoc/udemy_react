@@ -1,25 +1,30 @@
 {
-    "extends": [
-        "react-app",
-        "prettier"
+  "extends": ["react-app", "prettier"],
+  "plugins": ["react", "prettier"],
+  "rules": {
+    "prettier/prettier": [
+      "warn",
+      {
+        "arrowParens": "always",
+        "bracketSpacing": true,
+        "embeddedLanguageFormatting": "auto",
+        "htmlWhitespaceSensitivity": "css",
+        "insertPragma": false,
+        "jsxBracketSameLine": false,
+        "jsxSingleQuote": false,
+        "printWidth": 80,
+        "proseWrap": "preserve",
+        "quoteProps": "as-needed",
+        "requirePragma": false,
+        "semi": true,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "trailingComma": "es5",
+        "useTabs": false,
+        "vueIndentScriptAndStyle": false,
+        "endOfLine": "lf"
+      }
     ],
-    "plugins": [
-        "react",
-        "prettier"
-    ],
-    "rules": {
-        "prettier/prettier": [
-            "warn",
-            {
-                "arrowParens": "avoid",
-                "semi": false,
-                "trailingComma": "none",
-                "endOfLine": "lf",
-                "tabWidth": 2,
-                "printWidth": 80,
-                "useTabs": false
-            }
-        ],
-        "no-console": "warn"
-    }
+    "no-console": "warn"
+  }
 }
