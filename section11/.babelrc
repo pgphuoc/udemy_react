@@ -1,0 +1,38 @@
+{
+    "presets": [
+        [
+            "@babel/preset-env"
+            // OR "@babel/env",
+            // {
+            // targets
+            //// gender to ES5
+            //// "targets": "defaults" -- generated js adapter defaults to the top-level browsers
+            //// Other config browsers target --> generated js adapter to targets list
+            // "targets": {
+            //     "chrome": "58",
+            //     "ie": "11",
+            //     browsers: "last 1 safari version",
+            // }
+            // "useBuiltIns": "usage" | "entry" | false, defaults to false
+            //// false: Don't add polyfills automatically per file, and don't transform import "core-js" or import "@babel/polyfill" to individual polyfills.
+            //// entry: include polyfills and code transforms needed for users whose browsers have >0.25% market share
+            ////         (ignoring browsers without security updates like IE 10 and BlackBerry)
+            //// usage
+            //// Use usage | entry will add direct references to core-js module --> requires import core-js (same old module @babel/polyfill)
+            // }
+        ],
+        "@babel/react"
+    ],
+    "env": {
+        "development": {
+            "presets": [
+                [
+                    "@babel/preset-react",
+                    {
+                        "development": true
+                    }
+                ]
+            ]
+        }
+    }
+}
