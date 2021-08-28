@@ -1,45 +1,28 @@
-import React, { useContext } from 'react';
-
-import Login from './components/Login/Login';
-import Home from './components/Home/Home';
-import MainHeader from './components/MainHeader/MainHeader';
-
-import AuthContext from './store/auth-context';
+import React, { useState } from 'react';
+import Cart from './components/Cart/Cart';
+import Header from './components/Layouts/Header';
+import Meals from './components/Meals/Meals';
+import CartContextProvider from './store/CartContextProvider';
 
 function App() {
-  // == Move to auth-context.js
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [cartIsShown, setCartIsShown] = useState(false);
 
-  // useEffect(() => {
-  //   const storedUserLoggedInInformation = localStorage.getItem("isLoggedIn");
+  const showCartHandler = () => {
+    setCartIsShown(true);
+  };
 
-  //   if (storedUserLoggedInInformation === "1") {
-  //     setIsLoggedIn(true);
-  //   }
-  // }, []);
-
-  // const loginHandler = (email, password) => {
-  //   // We should of course check email and password
-  //   // But it's just a dummy/ demo anyways
-  //   localStorage.setItem("isLoggedIn", "1");
-  //   setIsLoggedIn(true);
-  // };
-
-  // const logoutHandler = () => {
-  //   localStorage.removeItem("isLoggedIn");
-  //   setIsLoggedIn(false);
-  // };
-
-  const ctx = useContext(AuthContext);
+  const hideCartHandler = () => {
+    setCartIsShown(false);
+  };
 
   return (
-    <React.Fragment>
-      <MainHeader />
+    <CartContextProvider>
+      {cartIsShown && <Cart onHidenCart={hideCartHandler} />}
+      <Header onShowCart={showCartHandler} />
       <main>
-        {!ctx.isLoggedIn && <Login />}
-        {ctx.isLoggedIn && <Home />}
+        <Meals />
       </main>
-    </React.Fragment>
+    </CartContextProvider>
   );
 }
 

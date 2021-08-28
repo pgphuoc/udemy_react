@@ -28,6 +28,12 @@
     "url": "https://github.com/pgphuoc/udemy_react/issues"
   },
   "homepage": "https://github.com/pgphuoc/udemy_react#readme",
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
   "devDependencies": {
     "@babel/cli": "^7.14.8",
     "@babel/core": "^7.15.0",

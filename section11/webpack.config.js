@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -31,15 +32,11 @@ const config = {
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
         test: cssRegex,
       },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: [{ loader: 'file-loader', options: '[path][name].[ext]' }],
+      },
     ],
-  },
-
-  optimization: {
-    splitChunks: {
-      chunks: 'all',
-      name: false,
-    },
-    runtimeChunk: 'single',
   },
 
   resolve: {
@@ -48,6 +45,14 @@ const config = {
       '@': path.resolve('src'),
       '@@': path.resolve(),
     },
+  },
+
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      name: false,
+    },
+    runtimeChunk: 'single',
   },
 
   devtool: 'source-map',
@@ -67,6 +72,9 @@ const config = {
       template: 'public/index.html',
       inject: 'body',
       minify: false,
+    }),
+    new webpack.ProvidePlugin({
+      React: 'react',
     }),
   ],
 };

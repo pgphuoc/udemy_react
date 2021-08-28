@@ -21,7 +21,12 @@
       //// Use usage | entry will add direct references to core-js module --> requires import core-js (same old module @babel/polyfill)
       // }
     ],
-    "@babel/react"
+    [
+      "@babel/preset-react",
+      {
+        "runtime": "automatic"
+      }
+    ]
   ],
   "env": {
     "development": {
