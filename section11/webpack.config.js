@@ -1,6 +1,10 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
+const jsRegex = /\.js$/;
+const cssRegex = /\.css$/;
 
 const VENDOR_LIBS = ['react', 'react-dom'];
 
@@ -9,47 +13,33 @@ const config = {
     bundle: './src/index.js',
     vendor: VENDOR_LIBS,
   },
+
   output: {
     path: path.join(__dirname, 'dist'),
     filename: '[name].js',
   },
+
   module: {
     rules: [
       {
         use: 'babel-loader',
-        test: /\.js$/,
+        test: jsRegex,
         exclude: /node_modules/,
       },
       {
-        // use: ["style-loader", "css-loader"],
+        // use: ['style-loader', 'css-loader'],
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
-        test: /\.css$/,
+        test: cssRegex,
       },
     ],
   },
 
   optimization: {
     splitChunks: {
-      chunks: 'async',
-      minSize: 20000,
-      minRemainingSize: 0,
-      minChunks: 1,
-      maxAsyncRequests: 30,
-      maxInitialRequests: 30,
-      enforceSizeThreshold: 50000,
-      cacheGroups: {
-        defaultVendors: {
-          test: /[\\/]node_modules[\\/]/,
-          priority: -10,
-          reuseExistingChunk: true,
-        },
-        default: {
-          minChunks: 2,
-          priority: -20,
-          reuseExistingChunk: true,
-        },
-      },
+      chunks: 'all',
+      name: false,
     },
+    runtimeChunk: 'single',
   },
 
   resolve: {
@@ -60,10 +50,23 @@ const config = {
     },
   },
 
+  devtool: 'source-map',
+
+  devServer: {
+    static: {
+      directory: path.join(__dirname, 'public'),
+    },
+    port: 3000,
+    open: true,
+  },
+
   plugins: [
+    new CleanWebpackPlugin(),
     new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin({
       template: 'public/index.html',
+      inject: 'body',
+      minify: false,
     }),
   ],
 };
