@@ -7,7 +7,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const jsRegex = /\.js$/;
 const cssRegex = /\.css$/;
 
-const VENDOR_LIBS = ['react', 'react-dom'];
+const VENDOR_LIBS = ['react', 'react-dom', 'lodash'];
 
 const config = {
   entry: {
