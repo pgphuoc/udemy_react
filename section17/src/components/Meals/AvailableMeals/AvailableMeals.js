@@ -1,36 +1,31 @@
 import Card from '@/components/UI/Card/Card';
-import { API_ENDPOINT_URL } from '@/constants';
+import useHttp from '@/hooks/use-http';
 import React, { useEffect, useState } from 'react';
 import MealItem from './../MealItem/MealItem';
 import classes from './AvailableMeals.module.css';
 
 const AvailableMeals = (props) => {
   const [meals, setMeals] = useState([]);
+  const { isLoading, error, sendRequest: fetchTasks } = useHttp();
 
   useEffect(() => {
-    const fetchMealList = async () => {
-      const response = await fetch(API_ENDPOINT_URL + 'meals.json');
+    const transformTasks = (meals) => {
+      const loadedTasks = [];
 
-      if (!response.ok) {
-        throw new Error('Fetch meals list errors');
-      }
-
-      const data = await response.json();
-      const mealLst = [];
-      for (const key in data) {
-        mealLst.push({
+      for (const key in meals) {
+        loadedTasks.push({
           id: key,
-          name: data[key].name,
-          description: data[key].description,
-          price: data[key].price,
+          name: meals[key].name,
+          description: meals[key].description,
+          price: meals[key].price,
         });
       }
 
-      setMeals(mealLst);
+      setMeals(loadedTasks);
     };
 
-    fetchMealList();
-  }, []);
+    fetchTasks({ url: 'meals.json' }, transformTasks);
+  }, [fetchTasks]);
 
   const mealsList = meals.map((meal) => (
     <MealItem
@@ -42,10 +37,15 @@ const AvailableMeals = (props) => {
     />
   ));
 
+  const mealContents = error && <p>{error}</p>;
+  const loadingContent = <p>Data loading...</p>;
+
   return (
     <section className={classes.meals}>
       <Card>
-        <ul>{mealsList}</ul>
+        {mealContents}
+        {!isLoading && <ul>{mealsList}</ul>}
+        {isLoading && loadingContent}
       </Card>
     </section>
   );

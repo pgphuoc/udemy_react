@@ -4,13 +4,14 @@ import React, { useContext, useState } from 'react';
 import classes from './Cart.module.css';
 import CartItem from './CartItem/CartItem';
 import Checkout from './Checkout/Checkout';
-import { API_ENDPOINT_URL } from '@/constants';
+import useHttp from '@/hooks/use-http';
 
 const Cart = (props) => {
   // Declare properties
   const [isCheckout, setIsCheckout] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const { isLoading, error, sendRequest: sendTaskRequest } = useHttp();
 
   const cartCtx = useContext(cartContext);
 
@@ -34,29 +35,29 @@ const Cart = (props) => {
   };
 
   const onOrderSubmitHandler = async (user) => {
-    setIsSubmitting(true);
-
-    await fetch(API_ENDPOINT_URL + 'orders.json', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+    sendTaskRequest(
+      {
+        url: 'orders.json',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: {
+          user,
+          orderItems: cartCtx.items,
+        },
       },
-      body: JSON.stringify({
-        user,
-        orderItems: cartCtx.items,
-      }),
-    });
-
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+      null
+    );
     cartCtx.clearItem();
+    setIsSubmitted(true);
   };
 
   // Generate layout
   const waitingContents = <p>Sending order data..</p>;
   const submitedContents = (
     <React.Fragment>
-      <p>Successfully sent the order!</p>
+      <p>{error ? error : 'Successfully sent the order!'}</p>
       <div className={classes.actions}>
         <button className={classes.button} onClick={props.onHidenCart}>
           Close
@@ -117,8 +118,8 @@ const Cart = (props) => {
 
   return (
     <Modal onClose={props.onHidenCart}>
-      {!isSubmitting && !isSubmitted && cartModelContents}
-      {isSubmitting && !isSubmitted && waitingContents}
+      {!isLoading && !isSubmitted && cartModelContents}
+      {isLoading && !isSubmitted && waitingContents}
       {isSubmitted && submitedContents}
     </Modal>
   );
