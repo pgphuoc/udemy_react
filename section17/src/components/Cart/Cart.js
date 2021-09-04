@@ -7,13 +7,17 @@ import Checkout from './Checkout/Checkout';
 import { API_ENDPOINT_URL } from '@/constants';
 
 const Cart = (props) => {
+  // Declare properties
   const [isCheckout, setIsCheckout] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const cartCtx = useContext(cartContext);
 
   const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
   const hasItems = cartCtx.items.length > 0;
 
+  // Declare Handler
   const cartItemAddHandler = (item) => {
     cartCtx.addItem({
       ...item,
@@ -25,6 +29,43 @@ const Cart = (props) => {
     cartCtx.removeItem(id);
   };
 
+  const onOrderHandler = () => {
+    setIsCheckout(true);
+  };
+
+  const onOrderSubmitHandler = async (user) => {
+    setIsSubmitting(true);
+
+    await fetch(API_ENDPOINT_URL + 'orders.json', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user,
+        orderItems: cartCtx.items,
+      }),
+    });
+
+    setIsSubmitting(false);
+    setIsSubmitted(true);
+    cartCtx.clearItem();
+  };
+
+  // Generate layout
+  const waitingContents = <p>Sending order data..</p>;
+  const submitedContents = (
+    <React.Fragment>
+      <p>Successfully sent the order!</p>
+      <div className={classes.actions}>
+        <button className={classes.button} onClick={props.onHidenCart}>
+          Close
+        </button>
+      </div>
+    </React.Fragment>
+  );
+
+  // Create cart display contents
   const cartItems = (
     <ul className={classes['cart-items']}>
       {cartCtx.items.map((item) => (
@@ -40,9 +81,12 @@ const Cart = (props) => {
     </ul>
   );
 
-  const onOrderHandler = () => {
-    setIsCheckout(true);
-  };
+  const cartTotal = (
+    <div className={classes.total}>
+      <span>Total Amount</span>
+      <span>{totalAmount}</span>
+    </div>
+  );
 
   const cartAction = (
     <div className={classes.actions}>
@@ -57,26 +101,10 @@ const Cart = (props) => {
     </div>
   );
 
-  const onOrderSubmitHandler = async (user) => {
-    await fetch(API_ENDPOINT_URL + 'orders.json', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        user,
-        orderItems: cartCtx.items,
-      }),
-    });
-  };
-
-  return (
-    <Modal onClose={props.onHidenCart}>
+  const cartModelContents = (
+    <React.Fragment>
       {cartItems}
-      <div className={classes.total}>
-        <span>Total Amount</span>
-        <span>{totalAmount}</span>
-      </div>
+      {cartTotal}
       {isCheckout && (
         <Checkout
           onCancel={props.onHidenCart}
@@ -84,6 +112,14 @@ const Cart = (props) => {
         />
       )}
       {!isCheckout && cartAction}
+    </React.Fragment>
+  );
+
+  return (
+    <Modal onClose={props.onHidenCart}>
+      {!isSubmitting && !isSubmitted && cartModelContents}
+      {isSubmitting && !isSubmitted && waitingContents}
+      {isSubmitted && submitedContents}
     </Modal>
   );
 };

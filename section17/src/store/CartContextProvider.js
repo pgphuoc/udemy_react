@@ -9,6 +9,7 @@ const defaultCartState = {
 
 const CART_ADD_ACTION = 'CART_ADD_ACTION';
 const CART_REMOVE_ACTION = 'CART_REMOVE_ACTION';
+const CART_CLEAR_ACTION = 'CART_CLEAR_ACTION';
 
 const findExistingItem = (items, targetId) => {
   const targetIndex = _.findIndex(items, (item) => {
@@ -73,6 +74,9 @@ const cartReducer = (state, action) => {
         };
       }
 
+    case CART_CLEAR_ACTION:
+      return defaultCartState;
+
     default:
       return defaultCartState;
   }
@@ -92,11 +96,16 @@ const CartContextProvider = (props) => {
     dispatchCartAction({ type: CART_REMOVE_ACTION, id });
   };
 
+  const clearCartItemHandler = (id) => {
+    dispatchCartAction({ type: CART_CLEAR_ACTION, id });
+  };
+
   const cartContext = {
     items: cartState.items,
     totalAmount: cartState.totalAmount,
     addItem: addCartItemHandler,
     removeItem: removeCartItemHandler,
+    clearItem: clearCartItemHandler,
   };
 
   return (
