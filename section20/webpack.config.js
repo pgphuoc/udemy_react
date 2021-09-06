@@ -7,7 +7,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const jsRegex = /\.js$/;
 const cssRegex = /\.css$/;
 
-const VENDOR_LIBS = ['react', 'react-dom', 'lodash'];
+const VENDOR_LIBS = ['react', 'react-dom', 'lodash', 'react-router-dom'];
 
 const config = {
   entry: {
@@ -17,7 +17,7 @@ const config = {
 
   output: {
     path: path.join(__dirname, 'dist'),
-    publicPath: '/',
+    publicPath: '/', // Xử lý thêm đuòng dẫn tương đối khi import tự động bởi HtmlWebpackPlugin
     filename: '[name].js',
   },
 
@@ -61,11 +61,11 @@ const config = {
   devServer: {
     static: {
       directory: path.join(__dirname, 'public'),
+      publicPath: './',
     },
     port: 3000,
     open: true,
-    hot: true,
-    historyApiFallback: true,
+    historyApiFallback: true, // Xử lý cho lazy load, sample: router ko thể redirect
   },
 
   plugins: [
@@ -75,7 +75,6 @@ const config = {
       template: 'public/index.html',
       inject: 'body',
       minify: false,
-      base: "/"
     }),
     new webpack.ProvidePlugin({
       React: 'react',
