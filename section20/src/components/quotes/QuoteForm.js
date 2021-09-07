@@ -2,7 +2,7 @@ import { Fragment, useRef, useState } from 'react';
 import { Prompt } from 'react-router-dom';
 
 import Card from '../ui/Card';
-import LoadingSpinner from '../ui/LoadingSpinner';
+import LoadingSpinner from '@/components/UI/LoadingSpinner';
 import classes from './QuoteForm.module.css';
 
 const QuoteForm = (props) => {

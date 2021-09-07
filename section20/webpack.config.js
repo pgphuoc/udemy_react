@@ -17,8 +17,8 @@ const config = {
 
   output: {
     path: path.join(__dirname, 'dist'),
-    publicPath: '/', // Xử lý thêm đuòng dẫn tương đối khi import tự động bởi HtmlWebpackPlugin
     filename: '[name].js',
+    publicPath: '/',
   },
 
   module: {
@@ -50,8 +50,8 @@ const config = {
 
   optimization: {
     splitChunks: {
-      // chunks: 'all',
-      name: 'vendor',
+      chunks: 'all',
+      // name: 'vendor',
     },
     runtimeChunk: 'single',
   },
@@ -61,7 +61,6 @@ const config = {
   devServer: {
     static: {
       directory: path.join(__dirname, 'public'),
-      publicPath: './',
     },
     port: 3000,
     open: true,
