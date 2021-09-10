@@ -10,20 +10,17 @@ function MeetupItem(props) {
   };
 
   return (
-    <li className={classes.item}>
-      <Card>
-        <div className={classes.image}>
-          <img src={props.image} alt={props.title} />
-        </div>
-        <div className={classes.content}>
-          <h3>{props.title}</h3>
-          <address>{props.address}</address>
-        </div>
-        <div className={classes.actions}>
-          <button onClick={showDetailsHandler}>Show Details</button>
-        </div>
-      </Card>
-    </li>
+    <Card type="item">
+      <img src={props.image} alt={props.title} className={classes.itemImage} />
+
+      <div className={classes.itemContent}>
+        <h3 className={classes.itemTitle}>{props.title}</h3>
+        <p className={classes.itemAddress}>{props.address}</p>
+      </div>
+      <div className={classes.itemButton}>
+        <button onClick={showDetailsHandler}>Show Details</button>
+      </div>
+    </Card>
   );
 }
 

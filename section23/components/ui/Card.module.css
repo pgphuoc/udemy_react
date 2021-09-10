@@ -1,5 +1,12 @@
 .card {
+  border-radius: 20px;
+  overflow: hidden;
   background-color: white;
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.card25 {
+  width: calc(25% - 25px);
+  margin-left: 25px;
+  margin-bottom: 25px;
 }

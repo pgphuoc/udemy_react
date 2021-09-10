@@ -1,24 +1,23 @@
 import MeetupDetail from "../../../components/meetups/MeetupDetail";
 import { MongoClient, ObjectId } from "mongodb";
 import { MONGO_URI } from "./../../../constants";
-
-const DUMMY_ITEM = {
-  id: "m1",
-  title: "A first meetup",
-  image:
-    "https://images.unsplash.com/photo-1630824104569-e81111f93eea?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1191&q=80",
-  address: "98 Hai Ho",
-  description: "This's first meetup",
-};
+import { Fragment } from "react";
+import Head from "next/head";
 
 const MeetupDetailPage = (props) => {
   return (
-    <MeetupDetail
-      image={props.meetupData.image}
-      title={props.meetupData.title}
-      address={props.meetupData.address}
-      description={props.meetupData.description}
-    />
+    <Fragment>
+      <Head>
+        <title>{props.meetupData.title}</title>
+        <meta name="description" content={props.meetupData.description} />
+      </Head>
+      <MeetupDetail
+        image={props.meetupData.image}
+        title={props.meetupData.title}
+        address={props.meetupData.address}
+        description={props.meetupData.description}
+      />
+    </Fragment>
   );
 };
 

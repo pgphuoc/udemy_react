@@ -2,6 +2,9 @@ import { MongoClient } from "mongodb";
 import MeetupList from "./../components/meetups/MeetupList";
 import { MONGO_URI, HTTP_STATUS_CREATED_SUCCESS } from "./../constants";
 
+import Head from "next/head";
+import { Fragment } from "react";
+
 // const DUMMY_MEETUP = [
 //   {
 //     id: "m1",
@@ -22,7 +25,15 @@ import { MONGO_URI, HTTP_STATUS_CREATED_SUCCESS } from "./../constants";
 // ];
 
 const HomePage = (props) => {
-  return <MeetupList meetups={props.meetups} />;
+  return (
+    <Fragment>
+      <Head>
+        <title>Home Page</title>
+        <meta name="description" content="This demo NextJS homepage" />
+      </Head>
+      <MeetupList meetups={props.meetups} />
+    </Fragment>
+  );
 };
 
 // Execute after deloy (runtime at server side)
